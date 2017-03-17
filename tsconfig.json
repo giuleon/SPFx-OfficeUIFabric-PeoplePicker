@@ -4,6 +4,8 @@
     "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "jsx": "react",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "declaration": true,
     "sourceMap": true,
     "types": [
