@@ -114,51 +114,7 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
   @autobind
   private _onFilterChanged(filterText: string, currentPersonas: IPersonaProps[], limitResults?: number) {
     if (filterText) {
-      debugger;
-      this.props.spHttpClient.get(`${this.props.siteUrl}/_api/search/query?querytext='*${filterText}*'&rowlimit=10&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'`,
-      SPHttpClient.configurations.v1,
-      {
-        headers: {
-          'Accept': 'application/json;odata=nometadata',
-          'odata-version': ''
-        }
-      })
-      .then((response: SPHttpClientResponse): Promise<{ PrimaryQueryResult: IPeopleDataResult }> => {
-        return response.json();
-      })
-      .then((response: { PrimaryQueryResult: IPeopleDataResult }): void => {
-        // this.setState({
-        //   status: `Successfully loaded ${response.value.length} items`,
-        //   items: response.value
-        // });
-
-        let relevantResults: any = response.PrimaryQueryResult.RelevantResults;
-        let resultCount: number = relevantResults.TotalRows;
-        let people: any = [];
-        if (resultCount > 0) {
-            relevantResults.Table.Rows.forEach(function (row) {
-                var person = {};
-                row.Cells.forEach(function (cell) {
-                    person[cell.Key] = cell.Value;
-                });
-                people.push(person);
-            });
-        }
-        
-        debugger;
-        //this._peopleList = response.PrimaryQueryResult;
-        
-      }, (error: any): void => {
-        // this.setState({
-        //   status: 'Loading all items failed with error: ' + error,
-        //   items: []
-        // });
-        this._peopleList = [];
-      });
-      debugger;
-
-      return this._peopleList;
-      // this.searchPeople(filterText);
+      return this.searchPeople(filterText, this._peopleList);
       // debugger;
       // return this._peopleList;
       // let filteredPersonas: IPersonaProps[] = this._filterPersonasByText(filterText);
@@ -171,49 +127,53 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
     }
   }
 
-  private searchPeople(terms: string): void {
+  private searchPeople(terms: string, results: IPersonaProps[]): IPersonaProps[] | Promise<IPersonaProps[]> {
+    //return new Promise<IPersonaProps[]>((resolve, reject) => setTimeout(() => resolve(results), 2000));
+    return new Promise<IPersonaProps[]>((resolve, reject) => 
+      this.props.spHttpClient.get(`${this.props.siteUrl}/_api/search/query?querytext='*${terms}*'&rowlimit=10&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'`,
+        SPHttpClient.configurations.v1,
+        {
+          headers: {
+            'Accept': 'application/json;odata=nometadata',
+            'odata-version': ''
+          }
+        })
+        .then((response: SPHttpClientResponse): Promise<{ PrimaryQueryResult: IPeopleDataResult }> => {
+          return response.json();
+        })
+        .then((response: { PrimaryQueryResult: IPeopleDataResult }): void => {
+          // this.setState({
+          //   status: `Successfully loaded ${response.value.length} items`,
+          //   items: response.value
+          // });
+
+          let relevantResults: any = response.PrimaryQueryResult.RelevantResults;
+          let resultCount: number = relevantResults.TotalRows;
+          let people: any = [];
+          if (resultCount > 0) {
+              relevantResults.Table.Rows.forEach(function (row) {
+                  var person = {};
+                  row.Cells.forEach(function (cell) {
+                      person[cell.Key] = cell.Value;
+                  });
+                  people.push(person);
+              });
+          }
+          //this._peopleList = response.PrimaryQueryResult;
+          resolve(this._peopleList);
+        }, (error: any): void => {
+          // this.setState({
+          //   status: 'Loading all items failed with error: ' + error,
+          //   items: []
+          // });
+          reject(this._peopleList = []);
+        }));
+
     // this.setState({
     //   status: 'Loading all items...',
     //   items: []
     // });
     
-    this.props.spHttpClient.get(`${this.props.siteUrl}/_api/search/query?querytext='*${terms}*'&rowlimit=10&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'`,
-      SPHttpClient.configurations.v1,
-      {
-        headers: {
-          'Accept': 'application/json;odata=nometadata',
-          'odata-version': ''
-        }
-      })
-      .then((response: SPHttpClientResponse): Promise<{ PrimaryQueryResult: IPeopleDataResult }> => {
-        return response.json();
-      })
-      .then((response: { PrimaryQueryResult: IPeopleDataResult }): void => {
-        // this.setState({
-        //   status: `Successfully loaded ${response.value.length} items`,
-        //   items: response.value
-        // });
-
-        let relevantResults: any = response.PrimaryQueryResult.RelevantResults;
-        let resultCount: number = relevantResults.TotalRows;
-        let people: any = [];
-        if (resultCount > 0) {
-            relevantResults.Table.Rows.forEach(function (row) {
-                var person = {};
-                row.Cells.forEach(function (cell) {
-                    person[cell.Key] = cell.Value;
-                });
-                people.push(person);
-            });
-        }
-        this._peopleList = response.PrimaryQueryResult;
-      }, (error: any): void => {
-        // this.setState({
-        //   status: 'Loading all items failed with error: ' + error,
-        //   items: []
-        // });
-        this._peopleList = [];
-      });
   }
 
   private _filterPersonasByText(filterText: string): IPersonaProps[] {
