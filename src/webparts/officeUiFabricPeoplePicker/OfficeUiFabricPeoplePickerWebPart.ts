@@ -4,7 +4,8 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  IWebPartContext
 } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'officeUiFabricPeoplePickerStrings';
@@ -18,7 +19,9 @@ export default class OfficeUiFabricPeoplePickerWebPart extends BaseClientSideWeb
     const element: React.ReactElement<IOfficeUiFabricPeoplePickerProps > = React.createElement(
       OfficeUiFabricPeoplePicker,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        spHttpClient: this.context.spHttpClient,
+        siteUrl: this.context.pageContext.web.absoluteUrl
       }
     );
 
