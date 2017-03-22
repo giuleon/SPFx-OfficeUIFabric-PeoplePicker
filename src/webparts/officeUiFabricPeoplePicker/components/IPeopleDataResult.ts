@@ -1,5 +1,5 @@
 export interface IPeopleDataResult {
-      RelevantResults: {
+    RelevantResults: {
         TotalRows: number,
         Table: {
             Rows: [{
@@ -10,14 +10,5 @@ export interface IPeopleDataResult {
                 }]
             }]
         }
-      }
-    // [
-    //     {
-    //     id: string,
-    //     main: string,
-    //     description: string,
-    //     icon: string,
-    //     temp: string
-    //     }
-    // ],
+    }
 }

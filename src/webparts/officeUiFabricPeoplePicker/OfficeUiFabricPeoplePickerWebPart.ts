@@ -5,6 +5,7 @@ import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
+  PropertyPaneDropdown,
   IWebPartContext
 } from '@microsoft/sp-webpart-base';
 
@@ -16,12 +17,13 @@ import { IOfficeUiFabricPeoplePickerWebPartProps } from './IOfficeUiFabricPeople
 export default class OfficeUiFabricPeoplePickerWebPart extends BaseClientSideWebPart<IOfficeUiFabricPeoplePickerWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IOfficeUiFabricPeoplePickerProps > = React.createElement(
+    const element: React.ReactElement<IOfficeUiFabricPeoplePickerProps> = React.createElement(
       OfficeUiFabricPeoplePicker,
       {
         description: this.properties.description,
         spHttpClient: this.context.spHttpClient,
-        siteUrl: this.context.pageContext.web.absoluteUrl
+        siteUrl: this.context.pageContext.web.absoluteUrl,
+        typePicker: this.properties.typePicker
       }
     );
 
@@ -43,9 +45,14 @@ export default class OfficeUiFabricPeoplePickerWebPart extends BaseClientSideWeb
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
+                PropertyPaneDropdown('typePicker', {
+                  label: strings.TypePickerLabel,
+                  selectedKey: "Normal",
+                  options: [
+                    { key: 'Normal', text: 'Normal' },
+                    { key: 'Compact', text: 'Compact' }
+                  ]
+                }),
               ]
             }
           ]

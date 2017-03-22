@@ -4,4 +4,5 @@ export interface IOfficeUiFabricPeoplePickerProps {
   description: string;
   spHttpClient: SPHttpClient;
   siteUrl: string;
+  typePicker: string;
 }

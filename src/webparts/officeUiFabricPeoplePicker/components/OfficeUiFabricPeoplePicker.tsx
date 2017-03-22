@@ -21,6 +21,7 @@ import {
   autobind
 } from 'office-ui-fabric-react/lib//Utilities';
 import { people } from './PeoplePickerExampleData';
+import { Label } from 'office-ui-fabric-react/lib/Label';
 import { IPeopleDataResult } from './IPeopleDataResult';
 import { IPersonaWithMenu } from 'office-ui-fabric-react/lib/components/pickers/PeoplePicker/PeoplePickerItems/PeoplePickerItem.Props';
 import { IContextualMenuItem } from 'office-ui-fabric-react/lib/ContextualMenu';
@@ -30,7 +31,11 @@ export interface IOfficeUiFabricPeoplePickerState {
   currentPicker?: number | string;
   delayResults?: boolean;
 }
-
+export interface IPeopleSearchProps {
+  JobTitle: string;
+  PictureURL: string;
+  PreferredName: string;
+}
 export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeUiFabricPeoplePickerProps, IOfficeUiFabricPeoplePickerState> {
   private _peopleList;
   private contextualMenuItems: IContextualMenuItem[] = [
@@ -79,49 +84,35 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
   }
 
   public render(): React.ReactElement<IOfficeUiFabricPeoplePickerProps> {
-    return (
-      <NormalPeoplePicker
-        onResolveSuggestions={ this._onFilterChanged }
-        getTextFromItem={ (persona: IPersonaProps) => persona.primaryText }
-        pickerSuggestionsProps={ suggestionProps }
-        className={ 'ms-PeoplePicker' }
-        key={ 'normal' }
-      />
-      /*<div className={styles.helloWorld}>
-        <div className={styles.container}>
-          <div className={css('ms-Grid-row ms-bgColor-themeDark ms-fontColor-white', styles.row)}>
-            <div className='ms-Grid-col ms-u-lg10 ms-u-xl8 ms-u-xlPush2 ms-u-lgPush1'>
-              <span className='ms-font-xl ms-fontColor-white'>
-                Welcome to SharePoint!
-              </span>
-              <p className='ms-font-l ms-fontColor-white'>
-                Customize SharePoint experiences using Web Parts.
-              </p>
-              <p className='ms-font-l ms-fontColor-white'>
-                {this.props.description}
-              </p>
-              <a className={css('ms-Button', styles.button)}
-                 href='https://github.com/SharePoint/sp-dev-docs/wiki'>
-                <span className='ms-Button-label'>Learn more</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>*/
-    );
+    if (this.props.typePicker == "Normal") {
+      return (
+        <NormalPeoplePicker
+          onResolveSuggestions={this._onFilterChanged}
+          getTextFromItem={(persona: IPersonaProps) => persona.primaryText}
+          pickerSuggestionsProps={suggestionProps}
+          className={'ms-PeoplePicker'}
+          key={'normal'}
+        />
+      );
+    } else {
+      return (
+        <CompactPeoplePicker
+          onResolveSuggestions={this._onFilterChanged}
+          getTextFromItem={(persona: IPersonaProps) => persona.primaryText}
+          pickerSuggestionsProps={suggestionProps}
+          className={'ms-PeoplePicker'}
+          key={'normal'}
+        />
+      );
+    }
   }
-  
+
   @autobind
   private _onFilterChanged(filterText: string, currentPersonas: IPersonaProps[], limitResults?: number) {
     if (filterText) {
-      return this.searchPeople(filterText, this._peopleList);
-      // debugger;
-      // return this._peopleList;
-      // let filteredPersonas: IPersonaProps[] = this._filterPersonasByText(filterText);
-
-      // filteredPersonas = this._removeDuplicates(filteredPersonas, currentPersonas);
-      // filteredPersonas = limitResults ? filteredPersonas.splice(0, limitResults) : filteredPersonas;
-      // return this._filterPromise(filteredPersonas);
+      if (filterText.length > 4) {
+        return this.searchPeople(filterText, this._peopleList);        
+      }
     } else {
       return [];
     }
@@ -129,7 +120,7 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
 
   private searchPeople(terms: string, results: IPersonaProps[]): IPersonaProps[] | Promise<IPersonaProps[]> {
     //return new Promise<IPersonaProps[]>((resolve, reject) => setTimeout(() => resolve(results), 2000));
-    return new Promise<IPersonaProps[]>((resolve, reject) => 
+    return new Promise<IPersonaProps[]>((resolve, reject) =>
       this.props.spHttpClient.get(`${this.props.siteUrl}/_api/search/query?querytext='*${terms}*'&rowlimit=10&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'`,
         SPHttpClient.configurations.v1,
         {
@@ -142,38 +133,28 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
           return response.json();
         })
         .then((response: { PrimaryQueryResult: IPeopleDataResult }): void => {
-          // this.setState({
-          //   status: `Successfully loaded ${response.value.length} items`,
-          //   items: response.value
-          // });
-
           let relevantResults: any = response.PrimaryQueryResult.RelevantResults;
           let resultCount: number = relevantResults.TotalRows;
-          let people: any = [];
+          let people = [];
+          let persona: IPersonaProps = {};
           if (resultCount > 0) {
-              relevantResults.Table.Rows.forEach(function (row) {
-                  var person = {};
-                  row.Cells.forEach(function (cell) {
-                      person[cell.Key] = cell.Value;
-                  });
-                  people.push(person);
+            relevantResults.Table.Rows.forEach(function (row) {
+              row.Cells.forEach(function (cell) {
+                //person[cell.Key] = cell.Value;
+                if (cell.Key === 'JobTitle')
+                  persona.secondaryText = cell.Value;
+                if (cell.Key === 'PictureURL')
+                  persona.imageUrl = cell.Value;
+                if (cell.Key === 'PreferredName')
+                  persona.primaryText = cell.Value;
               });
+              people.push(persona);
+            });
           }
-          //this._peopleList = response.PrimaryQueryResult;
-          resolve(this._peopleList);
+          resolve(people);
         }, (error: any): void => {
-          // this.setState({
-          //   status: 'Loading all items failed with error: ' + error,
-          //   items: []
-          // });
           reject(this._peopleList = []);
         }));
-
-    // this.setState({
-    //   status: 'Loading all items...',
-    //   items: []
-    // });
-    
   }
 
   private _filterPersonasByText(filterText: string): IPersonaProps[] {
