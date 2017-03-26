@@ -17,4 +17,4 @@ This package produces the following:
 * dist/* - a single bundle containing the components used for uploading to a cdn pointing a registered Sharepoint webpart library to.
 * example/* a test page that hosts all components in this package.
 
-![alt text](Preview.gif "SharePoint Framework PeoplePicker")
+![alt text](Preview1.gif "SharePoint Framework PeoplePicker")
