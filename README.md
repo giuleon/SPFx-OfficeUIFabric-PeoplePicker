@@ -1,4 +1,4 @@
-# spfx-office-ui-fabric-people-picker
+# SPFx-office-ui-fabric-people-picker
 
 This is where you include your web part docs.
 
