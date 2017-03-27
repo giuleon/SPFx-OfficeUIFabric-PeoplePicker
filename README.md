@@ -21,3 +21,5 @@ This package produces the following:
 
 If you lost the previous article please take a look here [Office UI Fabric People Picker and SharePoint search better together part 1 - SharePoint Add-In](http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-1/).
 As promise, I released a SharePoint Framework solution with the Office UI Fabric People Picker, like for the Add-In solution, the App across the SharePoint Search API is able to retrieve people.
+
+![Here the article on my blog](http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-2-sharepoint-framework/ "Here the article on my blog")
