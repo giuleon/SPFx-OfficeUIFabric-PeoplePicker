@@ -1,4 +1,4 @@
-# SPFx-office-ui-fabric-people-picker
+# SharePoint Framework Office UI Fabric People Picker
 
 ### Building the code
 
