@@ -1,4 +1,7 @@
 # SharePoint Framework Office UI Fabric People Picker
+SharePoint Framework solution with the Office UI Fabric People Picker, the client web part across the SharePoint Search API is able to retrieve people.
+
+[READ THE ARTICLE ON MY BLOG http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-2-sharepoint-framework/](http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-2-sharepoint-framework/)
 
 ### Building the code
 
