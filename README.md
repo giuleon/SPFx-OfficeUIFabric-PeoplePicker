@@ -1,26 +1,53 @@
-# SharePoint Framework Office UI Fabric People Picker
-SharePoint Framework solution with the Office UI Fabric People Picker, the client web part across the SharePoint Search API is able to retrieve people.
+# People Picker (React)
 
-[READ THE ARTICLE ON MY BLOG http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-2-sharepoint-framework/](http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-2-sharepoint-framework/)
+## Summary
+SharePoint Framework solution with the Office UI Fabric People Picker, the client web part across the SharePoint Rest API is able to retrieve people and groups.
 
-### Building the code
+![React-People-Picker-gif](/assets/Preview.gif)
 
-```bash
-git clone the repo
-npm i
-npm i -g gulp
-gulp serve
-```
+## Used SharePoint Framework Version 
+![drop](https://img.shields.io/badge/version-GA-green.svg)
 
-This package produces the following:
+## Applies to
 
-* lib/* commonjs components - this allows this package to be reused from other packages.
-* dist/* - a single bundle containing the components used for uploading to a cdn pointing a registered Sharepoint webpart library to.
-* example/* a test page that hosts all components in this package.
+* [SharePoint Framework](https://blogs.office.com/2017/02/23/sharepoint-framework-reaches-general-availability-build-and-deploy-engaging-web-parts-today/)
+* [Office 365 tenant](https://dev.office.com/sharepoint/docs/spfx/set-up-your-development-environment)
 
-![alt text](Preview1.gif "SharePoint Framework PeoplePicker")
+## Solution
 
-If you missed the previous article please take a look here [Office UI Fabric People Picker and SharePoint search better together part 1 - SharePoint Add-In](http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-1/).
-As promise, I released a SharePoint Framework solution with the Office UI Fabric People Picker, like for the Add-In solution, the App across the SharePoint Search API is able to retrieve people.
+Solution|Author(s)
+--------|---------
+spfx-react-peoplepicker | Giuliano De Luca ([@giuleon](https://twitter.com/giuleon) , [www.delucagiuliano.com](http://www.delucagiuliano.com))
 
-[Here the article on my blog](http://www.delucagiuliano.com/office-ui-fabric-people-picker-and-sharepoint-search-better-together-part-2-sharepoint-framework/)
+## Version history
+
+Version|Date|Comments
+-------|----|--------
+1.0.0|May 21, 2017|Initial release
+1.0.1|Sep 28, 2017|Updated to GA Version, New properties that allow to specify the number of items to display and which entities retrieve (User, SharePoint Groups, Distribution Lists, Security Groups).
+
+## Disclaimer
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+---
+
+## Minimal Path to Awesome
+
+- Clone this repository
+- in the command line run:
+  - `npm install`
+  - `gulp serve`
+
+## Features
+- Use [TypeScript](https://www.typescriptlang.org) to create the custom property pane control containing the taxonomy picker control.
+- Use the SharePoint Search API to grab people.
+
+#### Local Mode
+A browser in local mode (localhost) will be opened.
+https://localhost:4321/temp/workbench.html
+
+#### SharePoint Mode
+If you want to try on a real environment, open:
+https://your-domain.sharepoint.com/_layouts/15/workbench.aspx
+
+<img src="https://telemetry.sharepointpnp.com/sp-dev-fx-webparts/samples/react-peoplepicker" />
