@@ -12,23 +12,23 @@ import {
 } from 'office-ui-fabric-react/lib/Utilities';
 import { people } from './PeoplePickerExampleData';
 import { IContextualMenuItem } from 'office-ui-fabric-react/lib/ContextualMenu';
-import { 
-  SPHttpClient, 
-  SPHttpClientBatch, 
+import {
+  SPHttpClient,
+  SPHttpClientBatch,
   SPHttpClientResponse } from '@microsoft/sp-http';
-import { 
-  Environment, 
+import {
+  Environment,
   EnvironmentType
 } from '@microsoft/sp-core-library';
 import { Promise } from 'es6-promise';
 import  * as lodash from 'lodash';
-import { 
-  IClientPeoplePickerSearchUser, 
+import {
+  IClientPeoplePickerSearchUser,
   IEnsurableSharePointUser,
-  IEnsureUser, 
-  IOfficeUiFabricPeoplePickerState, 
+  IEnsureUser,
+  IOfficeUiFabricPeoplePickerState,
   SharePointUserPersona } from '../models/OfficeUiFabricPeoplePicker';
-import { IPersonaWithMenu } from 'office-ui-fabric-react/lib/components/pickers/PeoplePicker/PeoplePickerItems/PeoplePickerItem.types';
+import { IPersonaWithMenu } from 'office-ui-fabric-react/lib/components/pickers/PeoplePicker/PeoplePickerItems/PeoplePickerItem.Props';
 
 const suggestionProps: IBasePickerSuggestionsProps = {
   suggestionsHeaderText: 'Suggested People',
@@ -82,7 +82,7 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
       delayResults: false,
       selectedItems: []
     };
-    
+
   }
 
   public render(): React.ReactElement<IOfficeUiFabricPeoplePickerProps> {
@@ -90,7 +90,7 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
       return (
         <NormalPeoplePicker
           onChange={this._onChange.bind(this) }
-          onResolveSuggestions={this._onFilterChanged }          
+          onResolveSuggestions={this._onFilterChanged }
           getTextFromItem={(persona: IPersonaProps) => persona.primaryText}
           pickerSuggestionsProps={suggestionProps}
           className={'ms-PeoplePicker'}
@@ -125,7 +125,7 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
   private _onFilterChanged(filterText: string, currentPersonas: IPersonaProps[], limitResults?: number) {
     if (filterText) {
       if (filterText.length > 2) {
-        return this._searchPeople(filterText, this._peopleList);        
+        return this._searchPeople(filterText, this._peopleList);
       }
     } else {
       return [];
@@ -234,7 +234,7 @@ export default class OfficeUiFabricPeoplePicker extends React.Component<IOfficeU
               .then((response: SPHttpClientResponse) => response.json())
               .then((json: IEnsureUser) => json);
             });
-            
+
             var users = batch.execute().then(() => Promise.all(batchPromises).then(values => {
               values.forEach(v => {
                 let userPersona = lodash.find(persons, o => o.User.Key == v.LoginName);
